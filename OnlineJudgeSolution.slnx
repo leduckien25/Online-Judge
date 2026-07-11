@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="OnlineJudge.Api/OnlineJudge.Api.csproj" />
+  <Project Path="OnlineJudge.Core/OnlineJudge.Core.csproj" />
+  <Project Path="OnlineJudge.Sandbox/OnlineJudge.Sandbox.csproj" />
+</Solution>
