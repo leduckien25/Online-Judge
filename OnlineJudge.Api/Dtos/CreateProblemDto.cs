@@ -1,4 +1,5 @@
-﻿using OnlineJudge.Core.Models;
+﻿using OnlineJudge.Core.Enums;
+using OnlineJudge.Core.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace OnlineJudge.Api.Dtos
@@ -14,6 +15,9 @@ namespace OnlineJudge.Api.Dtos
 
         [Required(ErrorMessage = "Time limit is required")]
         public int TimeLimitMs { get; set; } = 2000;
+        [Required(ErrorMessage = "Difficulty is required")]
+        public DifficultyLevel Difficulty { get; set; }
+        public string? Example { get; set; }
 
         [Required(ErrorMessage = "Test cases are required")]
         public ICollection<CreateTestCaseDto> TestCases { get; set; } = null!;

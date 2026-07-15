@@ -17,7 +17,7 @@ namespace OnlineJudge.Core.Data
             modelBuilder.HasSequence<int>("SubmissionSequence").StartsAt(1).IncrementsBy(1);
             modelBuilder.HasSequence<int>("ProblemSequence").StartsAt(1).IncrementsBy(1);
             modelBuilder.HasSequence<int>("TestCaseSequence").StartsAt(1).IncrementsBy(1);
-
+            
             modelBuilder.Entity<Submission>()
                 .Property(s => s.Id)
                 .HasDefaultValueSql("'SUB' || lpad(nextval('\"SubmissionSequence\"')::text, 3, '0')");
@@ -25,6 +25,11 @@ namespace OnlineJudge.Core.Data
             modelBuilder.Entity<Problem>()
                 .Property(s=>s.Id)
                 .HasDefaultValueSql("'PRO' || lpad(nextval('\"ProblemSequence\"')::text, 3, '0')");
+
+            modelBuilder.Entity<Problem>()
+            .Property(p => p.Difficulty)
+            .HasConversion<string>() 
+            .HasMaxLength(20);
 
             modelBuilder.Entity<TestCase>()
                 .Property(s=>s.Id)
