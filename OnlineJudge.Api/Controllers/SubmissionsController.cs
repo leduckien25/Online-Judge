@@ -5,6 +5,8 @@ using OnlineJudge.Api.Dtos;
 using OnlineJudge.Core.Models;
 using OnlineJudge.Api.Responses;
 using OnlineJudge.Sandbox.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi;
 
 namespace OnlineJudge.Api.Controllers
 {
@@ -19,6 +21,25 @@ namespace OnlineJudge.Api.Controllers
         {
             _queue = queue;
             _context = context;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetSubmissions(string id)
+        {
+            var submission = await _context.Submissions.FirstOrDefaultAsync(s => s.Id == id);
+
+            if (submission == null) {
+                return NotFound(ApiResponse<object>.Fail("Submission not found"));
+            }
+
+            return Ok(ApiResponse<ResponseSubmissionDto>.Ok(new ResponseSubmissionDto
+            {
+                Id = submission.Id,
+                ProblemId = submission.ProblemId,
+                SourceCode = submission.SourceCode,
+                SubmittedAt = submission.SubmittedAt,
+                Status = submission.Status,
+            }));
         }
 
         [HttpPost]
@@ -40,9 +61,20 @@ namespace OnlineJudge.Api.Controllers
                     throw new Exception("Failed to save submission to the database.");
                 }
 
+                // 3. Map the entity to your Response DTO
+                var responseDto = new ResponseSubmissionDto
+                {
+                    Id = submission.Id,
+                    ProblemId = submission.ProblemId,
+                    SourceCode = dto.SourceCode,
+                    SubmittedAt = submission.SubmittedAt
+                };
+
+                // 4. Push the ID to the background worker queue
                 await _queue.EnqueueAsync(submission.Id);
 
-                return Ok(ApiResponse<Submission>.Ok(submission));
+                // 5. Return the clean DTO inside your API response wrapper
+                return Ok(ApiResponse<ResponseSubmissionDto>.Ok(responseDto));
 
             }
             catch (Exception ex)

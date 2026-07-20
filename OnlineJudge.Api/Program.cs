@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using OnlineJudge.Core.Data;
+using OnlineJudge.Core.Hub;
 using OnlineJudge.Core.Models;
 using OnlineJudge.Sandbox.Services;
 using OnlineJudge.Sandbox.Workers;
@@ -27,10 +28,12 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins("http://localhost:4200") 
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
 });
 
+builder.Services.AddSignalR();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -49,6 +52,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapHub<SubmissionHub>("/r/submissions");
 
 app.MapDefaultControllerRoute();
 

@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OnlineJudge.Core.Data;
+using OnlineJudge.Core.Hub;
 using OnlineJudge.Sandbox.Services;
 using System;
 using System.Collections.Generic;
@@ -15,12 +17,14 @@ namespace OnlineJudge.Sandbox.Workers
         private readonly ISubmissionQueue _queue;
         private readonly IServiceScopeFactory _scopeFactory;
         private readonly ISandboxService _sandboxService;
+        private readonly IHubContext<SubmissionHub> _submissionHub;
 
-        public JudgingWorker(ISubmissionQueue queue, IServiceScopeFactory scopeFactory, ISandboxService sandboxService)
+        public JudgingWorker(ISubmissionQueue queue, IServiceScopeFactory scopeFactory, ISandboxService sandboxService, IHubContext<SubmissionHub> submissionHub)
         {
             _queue = queue;
             _scopeFactory = scopeFactory;
             _sandboxService = sandboxService;
+            _submissionHub = submissionHub;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -51,6 +55,8 @@ namespace OnlineJudge.Sandbox.Workers
                         Console.WriteLine($"Problem {submission.ProblemId} not found in database. Skipping.");
                         submission.Status = "RE";
                         await dbContext.SaveChangesAsync(stoppingToken);
+                        await _submissionHub.Clients.Group(submissionId).SendAsync("OnStatusUpdate", submission.Status);
+
                         continue;
                     }
 
@@ -84,6 +90,7 @@ namespace OnlineJudge.Sandbox.Workers
 
                     Console.WriteLine($"Submission {submissionId} judged. Status: {submission.Status}");
 
+                    await _submissionHub.Clients.Group(submissionId).SendAsync("OnStatusUpdate", submission.Status);
                     await dbContext.SaveChangesAsync(stoppingToken);
                 }
             }
