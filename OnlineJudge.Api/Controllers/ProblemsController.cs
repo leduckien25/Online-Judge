@@ -28,6 +28,7 @@ namespace OnlineJudge.Api.Controllers
                 {
                     Id = existingProblem.Id,
                     Title = existingProblem.Title,
+                    Difficulty = existingProblem.Difficulty,
                     Description = existingProblem.Description,
                     TimeLimitMs = existingProblem.TimeLimitMs
                 };
@@ -37,6 +38,7 @@ namespace OnlineJudge.Api.Controllers
 
             return NotFound(ApiResponse<object>.Fail("Problem not found"));
         }
+
         [HttpGet]
         public async Task<IActionResult> GetProblems()
         {
@@ -49,6 +51,7 @@ namespace OnlineJudge.Api.Controllers
                     Id = p.Id,
                     Title = p.Title,
                     Description = p.Description,
+                    Difficulty = p.Difficulty,
                     TimeLimitMs = p.TimeLimitMs
                 }).ToList();
 
