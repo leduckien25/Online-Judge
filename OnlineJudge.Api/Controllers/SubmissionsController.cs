@@ -43,7 +43,7 @@ namespace OnlineJudge.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SubmitCode([FromBody] SubmissionDto dto)
+        public async Task<IActionResult> SubmitCode([FromBody] SubmissionCreateDto dto)
         {
             var submission = new Submission
             {

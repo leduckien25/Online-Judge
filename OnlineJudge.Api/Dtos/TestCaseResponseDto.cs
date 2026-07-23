@@ -2,12 +2,14 @@
 
 namespace OnlineJudge.Api.Dtos
 {
-    public class CreateTestCaseDto
+    public class TestCaseResponseDto
     {
-        [Required(ErrorMessage = "Input data is required")]
+        [Required]
+        public string Id { get; set; } = null!;
+        [Required]
         public string InputData { get; set; } = null!;
 
-        [Required(ErrorMessage = "Expected output is required")]
+        [Required]
         public string ExpectedOutput { get; set; } = null!;
     }
 }

@@ -6,8 +6,8 @@ namespace OnlineJudge.Core.Enums
 {
     public enum DifficultyLevel
     {
-        EASY,
-        MEDIUM,
-        HARD
+        Easy,
+        Medium,
+        Hard
     }
 }

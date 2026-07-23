@@ -24,7 +24,7 @@ namespace OnlineJudge.Api.Controllers
             var existingProblem = await _context.Problems.FindAsync(id);
 
             if (existingProblem != null) {
-                var problemDto = new ResponseProblemDto
+                var problemDto = new ProblemResponseDto
                 {
                     Id = existingProblem.Id,
                     Title = existingProblem.Title,
@@ -33,7 +33,7 @@ namespace OnlineJudge.Api.Controllers
                     TimeLimitMs = existingProblem.TimeLimitMs
                 };
 
-                return Ok(ApiResponse<ResponseProblemDto>.Ok(problemDto));
+                return Ok(ApiResponse<ProblemResponseDto>.Ok(problemDto));
             }
 
             return NotFound(ApiResponse<object>.Fail("Problem not found"));
@@ -46,7 +46,7 @@ namespace OnlineJudge.Api.Controllers
 
             if(problems.Count> 0)
             {
-                var problemDtos = problems.Select(p => new ResponseProblemDto
+                var problemDtos = problems.Select(p => new ProblemResponseDto
                 {
                     Id = p.Id,
                     Title = p.Title,
@@ -55,7 +55,7 @@ namespace OnlineJudge.Api.Controllers
                     TimeLimitMs = p.TimeLimitMs
                 }).ToList();
 
-                return Ok(ApiResponse<IEnumerable<ResponseProblemDto>>.Ok(problemDtos));
+                return Ok(ApiResponse<IEnumerable<ProblemResponseDto>>.Ok(problemDtos));
             }
 
             return NotFound(ApiResponse<object>.Fail("No problems found"));

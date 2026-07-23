@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace OnlineJudge.Api.Dtos
 {
-    public class ResponseProblemDto
+    public class ProblemResponseDto
     {
         public string Id { get; set; } = null!;
 

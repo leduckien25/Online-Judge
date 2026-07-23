@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OnlineJudge.Api.Dtos
 {
-    public class CreateProblemDto
+    public class ProblemCreateDto
     {
         [Required(ErrorMessage = "Title is required")]
         [StringLength(200, ErrorMessage = "Title cannot exceed 200 characters")]
@@ -20,7 +20,7 @@ namespace OnlineJudge.Api.Dtos
         public string? Example { get; set; }
 
         [Required(ErrorMessage = "Test cases are required")]
-        public ICollection<CreateTestCaseDto> TestCases { get; set; } = null!;
+        public ICollection<TestCaseCreateDto> TestCases { get; set; } = null!;
 
     }
 }
