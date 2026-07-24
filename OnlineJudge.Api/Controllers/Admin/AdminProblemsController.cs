@@ -16,18 +16,13 @@ namespace OnlineJudge.Api.Controllers.Admin
         public AdminProblemsController(AppDbContext context) => _context = context;
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ProblemCreateDto createProblemDto)
+        public async Task<IActionResult> CreateProblem([FromBody] ProblemCreateDto createProblemDto)
         {
             var problem = new Problem
             {
                 Title = createProblemDto.Title,
                 Description = createProblemDto.Description,
-                TimeLimitMs = createProblemDto.TimeLimitMs,
-                TestCases = [.. createProblemDto.TestCases.Select(tc => new TestCase
-                {
-                    InputData = tc.InputData,
-                    ExpectedOutput = tc.ExpectedOutput
-                })]
+                TimeLimitMs = createProblemDto.TimeLimitMs
             };
 
             await _context.Problems.AddAsync(problem);

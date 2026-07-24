@@ -18,9 +18,5 @@ namespace OnlineJudge.Api.Dtos
         [Required(ErrorMessage = "Difficulty is required")]
         public DifficultyLevel Difficulty { get; set; }
         public string? Example { get; set; }
-
-        [Required(ErrorMessage = "Test cases are required")]
-        public ICollection<TestCaseCreateDto> TestCases { get; set; } = null!;
-
     }
 }
