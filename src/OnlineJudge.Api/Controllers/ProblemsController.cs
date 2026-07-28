@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using OnlineJudge.Core.Data;
-using OnlineJudge.Core.Models;
 using OnlineJudge.Api.Responses;
 using Microsoft.EntityFrameworkCore;
 using OnlineJudge.Api.Dtos;
@@ -23,7 +22,8 @@ namespace OnlineJudge.Api.Controllers
         {
             var existingProblem = await _context.Problems.FindAsync(id);
 
-            if (existingProblem != null) {
+            if (existingProblem != null)
+            {
                 var problemDto = new ProblemResponseDto
                 {
                     Id = existingProblem.Id,
@@ -44,7 +44,7 @@ namespace OnlineJudge.Api.Controllers
         {
             var problems = await _context.Problems.ToListAsync();
 
-            if(problems.Count> 0)
+            if (problems.Count > 0)
             {
                 var problemDtos = problems.Select(p => new ProblemResponseDto
                 {

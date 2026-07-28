@@ -1,5 +1,4 @@
 ﻿using OnlineJudge.Core.Enums;
-using OnlineJudge.Core.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace OnlineJudge.Api.Dtos

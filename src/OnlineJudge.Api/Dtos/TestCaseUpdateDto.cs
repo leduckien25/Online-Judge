@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace OnlineJudge.Api.Dtos
+﻿namespace OnlineJudge.Api.Dtos
 {
     public class TestCaseUpdateDto
     {

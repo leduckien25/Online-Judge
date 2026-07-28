@@ -13,12 +13,16 @@ namespace OnlineJudge.Sandbox.Services
 
         public async Task<(double Time, string Output, string? Error)> RunPythonCodeAsync(string sourceCode, string inputData)
         {
-            string parentDir = Path.Combine(FindSolutionDirectory(), "OnlineJudge.Sandbox");
-            string filePath = Path.Combine(parentDir, "solution.py");
-            
+            string localContainerDir = Path.Combine(AppContext.BaseDirectory, "sandbox");
+
+            string filePath = Path.Combine(localContainerDir, "solution.py");
+
             await File.WriteAllTextAsync(filePath, sourceCode);
 
-            string arguments = $@"run --rm -i --network none -v ""{parentDir}:/app:ro"" -m 50m --cpus=""0.5"" python:3.10-alpine /usr/bin/time -f ""EXEC_TIME:%e"" python /app/solution.py";
+            string hostMountDir = Environment.GetEnvironmentVariable("HOST_SANDBOX_DIR")
+                                  ?? Path.GetFullPath(localContainerDir).Replace("\\", "/");
+
+            string arguments = $@"run --rm -i --network none -v ""{hostMountDir}:/app:ro"" -m 50m --cpus=""0.5"" python:3.10-alpine python /app/solution.py";
 
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
@@ -81,35 +85,10 @@ namespace OnlineJudge.Sandbox.Services
                     }
                 }
 
-                File.WriteAllText(filePath, string.Empty);
+                await File.WriteAllTextAsync(filePath, string.Empty);
 
                 return (executionTime, rawOutput, cleanError);
             }
-        }
-
-        private static string FindSolutionDirectory()
-        {
-            var dir = new DirectoryInfo(AppContext.BaseDirectory);
-            while (dir != null)
-            {
-                try
-                {
-                    var slnExists = dir.GetFiles("*.sln").Any() || dir.GetFiles("*.slnx").Any();
-                    if (slnExists)
-                    {
-                        return dir.FullName;
-                    }
-                }
-                catch
-                {
-                    // Ignore and continue up the directory tree
-                }
-
-                dir = dir.Parent;
-            }
-
-            // Fallback to previous behavior if no solution file found
-            return Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", ".."));
         }
     }
 }

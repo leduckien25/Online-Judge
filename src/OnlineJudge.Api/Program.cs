@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using OnlineJudge.Core.Data;
 using OnlineJudge.Core.Hub;
-using OnlineJudge.Core.Models;
 using OnlineJudge.Sandbox.Services;
 using OnlineJudge.Sandbox.Workers;
 using System.Text.Json.Serialization;

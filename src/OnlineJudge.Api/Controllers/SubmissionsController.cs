@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using OnlineJudge.Core.Data;
 using OnlineJudge.Api.Dtos;
 using OnlineJudge.Core.Models;
 using OnlineJudge.Api.Responses;
 using OnlineJudge.Sandbox.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi;
 
 namespace OnlineJudge.Api.Controllers
 {
@@ -28,7 +26,8 @@ namespace OnlineJudge.Api.Controllers
         {
             var submission = await _context.Submissions.FirstOrDefaultAsync(s => s.Id == id);
 
-            if (submission == null) {
+            if (submission == null)
+            {
                 return NotFound(ApiResponse<object>.Fail("Submission not found"));
             }
 
@@ -54,7 +53,7 @@ namespace OnlineJudge.Api.Controllers
             try
             {
                 await _context.Submissions.AddAsync(submission);
-                int rowsAffected =   await _context.SaveChangesAsync();
+                int rowsAffected = await _context.SaveChangesAsync();
 
                 if (rowsAffected < 1)
                 {

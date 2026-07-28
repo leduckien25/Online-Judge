@@ -1,5 +1,4 @@
 ﻿using OnlineJudge.Core.Enums;
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace OnlineJudge.Api.Dtos
