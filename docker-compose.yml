@@ -1,3 +1,4 @@
+name: onlinejudge-api
 services:
   postgres-db:
     image: postgres:18.4
@@ -16,11 +17,19 @@ services:
       timeout: 5s
       retries: 5
 
+  python-init:
+    image: docker:cli
+    container_name: python_init
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: docker pull python:3.10-alpine
+
   api:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: onlinejudge_api
+    image: duckien185/onlinejudge_api:v1.0
     user: root
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
