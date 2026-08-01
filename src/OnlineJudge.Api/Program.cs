@@ -30,15 +30,18 @@ builder.Services.AddDbContext<AppDbContext>(ops =>
 builder.Services.AddTransient<ISandboxService, SandboxService>();
 builder.Services.AddHostedService<JudgingWorker>();
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngular", policy =>
-    {
-        policy.SetIsOriginAllowed(_ => true)
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
-    });
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("https://onlinjudge.id.vn") // Your frontend URL
+                                .AllowAnyHeader()
+                                .AllowAnyMethod()
+                                .AllowCredentials(); // Optional: Include if passing cookies/auth headers
+                      });
 });
 
 builder.Services.AddSignalR();
