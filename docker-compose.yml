@@ -44,6 +44,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - HOST_SANDBOX_DIR=${PWD}/sandbox
       - ConnectionStrings__PostgreSQLConnection=Host=${DB_HOST};Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      - CorsSettings__AllowedOrigins__0=${CORS_ALLOWED_ORIGIN}
     depends_on:
       postgres-db:
         condition: service_healthy
