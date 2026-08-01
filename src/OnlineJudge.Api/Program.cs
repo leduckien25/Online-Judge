@@ -67,9 +67,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseRouting();
-
 app.UseCors("AllowAngular");
+
+app.UseRouting();
 
 app.UseAuthorization();
 
