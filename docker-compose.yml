@@ -48,6 +48,8 @@ services:
       postgres-db:
         condition: service_healthy
     restart: always
+    env_file:
+      - /home/kienld/onlinejudge-api/.env
 
   cloudflared:
     image: cloudflare/cloudflared:latest
