@@ -1,0 +1,40 @@
+name: Deploy OnlineJudge API
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  # Step 1: GitHub Cloud Runner builds & pushes the Docker image
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: duckien185/onlinejudge_api:latest
+
+  # Step 2: YOUR VM executes this job locally!
+  deploy:
+    needs: build-and-push
+    runs-on: self-hosted  # <--- Runs inside your VM
+    steps:
+      - name: Checkout ONLY docker-compose.yml
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            docker-compose.yml
+          sparse-checkout-cone-mode: false
+
+      - name: Deploy with Docker Compose
+        run: |
+          docker compose up -d --remove-orphans
