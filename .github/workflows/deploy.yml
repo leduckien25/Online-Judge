@@ -37,4 +37,12 @@ jobs:
 
       - name: Deploy with Docker Compose
         run: |
+          cat << 'EOF' > .env
+          POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+          ConnectionStrings__DefaultConnection=${{ secrets.DB_CONNECTION_STRING }}
+          CLOUDFLARE_TUNNEL_TOKEN=${{ secrets.CLOUDFLARE_TUNNEL_TOKEN }}
+          EOF
+
           docker compose up -d --remove-orphans

@@ -37,7 +37,7 @@ services:
     user: root
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./sandbox:/app/sandbox
+      # - ./sandbox:/app/sandbox
     ports:
       - "8080:8080"
     environment:
