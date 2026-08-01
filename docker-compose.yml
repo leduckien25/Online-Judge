@@ -49,15 +49,6 @@ services:
         condition: service_healthy
     restart: always
 
-  watchtower:
-    image: containrrr/watchtower:latest
-    container_name: my-watchtower
-    restart: always
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ~/.docker/config.json:/config.json:ro
-    command: --interval 300 --cleanup
-
   cloudflared:
     image: cloudflare/cloudflared:latest
     container_name: cloudflare_tunnel
