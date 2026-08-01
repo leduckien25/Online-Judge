@@ -72,7 +72,7 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
-app.UseCors("AllowAngular");
+app.UseCors("_myAllowSpecificOrigins");
 
 app.UseAuthorization();
 
