@@ -11,11 +11,14 @@ services:
       - "${DB_PORT}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql
+    restart: always
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
       interval: 5s
       timeout: 5s
       retries: 5
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
 
   python-init:
     image: docker:cli
@@ -23,13 +26,14 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: docker pull python:3.10-alpine
+    restart: always
 
   api:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: onlinejudge_api
-    image: duckien185/onlinejudge_api:v1.0
+    image: duckien185/onlinejudge_api:latest
     user: root
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -43,6 +47,21 @@ services:
     depends_on:
       postgres-db:
         condition: service_healthy
+    restart: always
 
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: my-watchtower
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.docker/config.json:/config.json:ro
+    command: --interval 300 --cleanup
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflare_tunnel
+    restart: always
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
 volumes:
   postgres_data:
