@@ -29,11 +29,15 @@ builder.Services.AddDbContext<AppDbContext>(ops =>
 
 builder.Services.AddTransient<ISandboxService, SandboxService>();
 builder.Services.AddHostedService<JudgingWorker>();
+var allowedOrigins = builder.Configuration
+    .GetSection("CorsSettings:AllowedOrigins")
+    .Get<string[]>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular", policy =>
     {
-        policy.WithOrigins(builder.Configuration["CorsSettings:AllowedOrigins"]?.Split(",") ?? new string[0])
+        policy.WithOrigins(allowedOrigins!)
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
