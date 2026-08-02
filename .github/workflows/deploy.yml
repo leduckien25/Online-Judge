@@ -51,3 +51,8 @@ jobs:
       - name: Cleanup dangling images
         run: |
           docker image prune -f
+
+      - name: Clean up sandbox files with root permission
+        if: always()
+        run: |
+          sudo rm -rf sandbox
