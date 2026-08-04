@@ -14,11 +14,12 @@ RUN dotnet publish "/src/OnlineJudge.Api/OnlineJudge.Api.csproj" -c Release -o /
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 
-COPY --from=build /app/out ./
-
 RUN apt-get update && \
     apt-get install -y docker.io && \
     rm -rf /var/lib/apt/lists/*
+
+
+COPY --from=build /app/out ./
 
 EXPOSE 8080
 
