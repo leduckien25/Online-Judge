@@ -34,7 +34,7 @@ services:
       dockerfile: Dockerfile
     container_name: onlinejudge_api
     image: duckien185/onlinejudge_api:latest
-    user: root
+    user: "${UID}:${GID}"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./sandbox:/app/sandbox

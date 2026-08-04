@@ -28,10 +28,6 @@ jobs:
     needs: build-and-push
     runs-on: self-hosted  # <--- Runs inside your VM
     steps:
-      - name: Clean up sandbox files with root permission
-        run: |
-          sudo rm -rf sandbox
-    
       - name: Checkout ONLY docker-compose.yml
         uses: actions/checkout@v4
         with:
