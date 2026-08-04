@@ -60,8 +60,5 @@ namespace OnlineJudge.Api.Controllers
 
             return NotFound(ApiResponse<object>.Fail("No problems found"));
         }
-
-
     }
-
 }
