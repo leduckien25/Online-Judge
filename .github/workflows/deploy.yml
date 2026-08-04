@@ -26,7 +26,10 @@ jobs:
   # Step 2: YOUR VM executes this job locally!
   deploy:
     needs: build-and-push
-    runs-on: self-hosted  # <--- Runs inside your VM
+    strategy:
+      matrix:
+        target-vm: [VMware, AWS] 
+    runs-on: [self-hosted, "${{ matrix.target-vm }}"]
     steps:
       - name: Checkout ONLY docker-compose.yml
         uses: actions/checkout@v4
