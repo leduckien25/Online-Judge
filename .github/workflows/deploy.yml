@@ -7,7 +7,7 @@ on:
 jobs:
   # Step 1: GitHub Cloud Runner builds & pushes the Docker image
   build-and-push:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v7.0.1
